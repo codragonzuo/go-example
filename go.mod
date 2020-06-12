@@ -1,3 +1,3 @@
-github.com/codragonzuo/go-example
+module github.com/codragonzuo/go-example
 
 go 1.13
