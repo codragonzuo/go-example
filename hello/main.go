@@ -4,7 +4,7 @@ import (
     "fmt"
 
     "github.com/codragonzuo/go-example/meal"
-    "github.com/codragonzuo/go-example/life"
+    "github.com/codragonzuo/go-example/hello/life"
 )
 
 func main() {
