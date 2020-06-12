@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-    meal.getlunch()
+    meal.Getlunch()
 
     fmt.Println("Hello World !")
 }

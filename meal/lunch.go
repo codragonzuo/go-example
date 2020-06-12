@@ -4,7 +4,7 @@ import (
     "fmt"
 )
 
-func getlunch() {
+func Getlunch() {
     fmt.Printf("My lunch is chicken")
 }
 
