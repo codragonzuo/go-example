@@ -60,3 +60,8 @@ PKG_CONFIG="pkg-config"
 GOGCCFLAGS="-fPIC -m64 -pthread -fmessage-length=0 -fdebug-prefix-map=/tmp/go-build372689315=/tmp/go-build"
 ```
 
+### 查找和替换
+```
+sed -i "s/github.com\/elastic\/beats\/v7/github.com\/codragonzuo\/beats/g" `grep -rl "github.com" ./`
+```
+
