@@ -5,6 +5,6 @@ import (
 )
 
 func Getlunch() {
-    fmt.Printf("My lunch is chicken")
+    fmt.Printf("My lunch is chicken\n")
 }
 
