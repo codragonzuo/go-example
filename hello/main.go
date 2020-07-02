@@ -44,7 +44,7 @@ func sqlquery(){
     defer db.Close()
 
     // Execute the query
-    results, err := db.Query("SELECT user_id, user_name FROM users")
+    results, err := db.Query("select alert_id ,alert_label from alert_history where alert_id > 8840")
     if err != nil {
         fmt.Printf("db.query error \n")
         panic(err.Error()) // proper error handling instead of panic in your app
