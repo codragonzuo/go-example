@@ -3,6 +3,7 @@ package main
 import (
     "fmt"
     "log"
+    "runtime"
     "github.com/codragonzuo/go-example/meal"
     "github.com/codragonzuo/go-example/hello/life"
     "database/sql"
@@ -28,8 +29,25 @@ func main() {
 
     fmt.Println("Hello World !")
 
-    sqlquery()
+    //go say ("world")
+    //say ("hello")
+    //sqlquery()
 }
+
+func sayhello(){
+    say ("hello")
+    sqlquery()
+
+}
+
+func say(s string){
+    //for  {
+    for i:=0; i<5; i++ {
+        runtime.Gosched()
+        fmt.Println(s)
+    }
+}
+
 
 func sqlquery(){
     
