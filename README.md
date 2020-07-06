@@ -1,6 +1,22 @@
 ## Go Package Example
 
+```
+git clone https://github.com/codragonzuo/beats.git
 
+
+
+git clone https://github.com/codragonzuo/go-example.git
+
+export http_proxy=http://127.0.0.1:10808/
+
+export https_proxy=http://127.0.0.1:10808/
+
+export http_proxy=
+
+export https_proxy=
+
+
+```
 
 ### 修改 ./git/config,这样git才能提交
 ```
