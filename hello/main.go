@@ -6,6 +6,8 @@ import (
     "runtime"
     "github.com/codragonzuo/go-example/meal"
     "github.com/codragonzuo/go-example/hello/life"
+    "github.com/codragonzuo/go-example/commu/commu"
+    "github.com/codragonzuo/go-example/commu/sharedlib"
     "database/sql"
     _ "github.com/go-sql-driver/mysql"
 )
