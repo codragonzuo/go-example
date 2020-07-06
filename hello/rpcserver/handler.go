@@ -72,6 +72,10 @@ func (p *CalculatorHandler) Calculate(ctx context.Context, logid int32, w *commu
     return val, err
 }
 
+func  (p *CalculatorHandler) Doconfig(ctx context.Context, commandid int32, operationid int32, jsonconfig string) (val int32, err error) {
+    return 1,nil
+}
+
 func (p *CalculatorHandler) GetStruct(ctx context.Context, key int32) (*sharedlib.SharedStruct, error) {
     fmt.Print("getStruct(", key, ")\n")
     v, _ := p.log[int(key)]
