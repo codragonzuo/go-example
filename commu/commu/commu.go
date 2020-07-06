@@ -11,7 +11,7 @@ import(
 	"errors"
 	"fmt"
 	"github.com/apache/thrift/lib/go/thrift"
-	"shared"
+	"github.com/codragonzuo/go-example/commu/sharedlib"
 
 )
 
@@ -22,7 +22,7 @@ var _ = context.Background
 var _ = reflect.DeepEqual
 var _ = bytes.Equal
 
-var _ = shared.GoUnusedProtection__
+var _ = sharedlib.GoUnusedProtection__
 //You can define enums, which are just 32 bit integers. Values are optional
 //and start at 1 if not supplied, C style again.
 type Operation int64
@@ -441,7 +441,7 @@ func (p *InvalidOperation) Error() string {
 }
 
 type Calculator interface {
-  shared.SharedService
+  sharedlib.SharedService
   //Ahh, now onto the cool part, defining a service. Services just need a name
   //and can optionally inherit from another service using the extends keyword.
 
@@ -467,19 +467,19 @@ type Calculator interface {
 //Ahh, now onto the cool part, defining a service. Services just need a name
 //and can optionally inherit from another service using the extends keyword.
 type CalculatorClient struct {
-  *shared.SharedServiceClient
+  *sharedlib.SharedServiceClient
 }
 
 func NewCalculatorClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *CalculatorClient {
-  return &CalculatorClient{SharedServiceClient: shared.NewSharedServiceClientFactory(t, f)}}
+  return &CalculatorClient{SharedServiceClient: sharedlib.NewSharedServiceClientFactory(t, f)}}
 
 func NewCalculatorClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *CalculatorClient {
-  return &CalculatorClient{SharedServiceClient: shared.NewSharedServiceClientProtocol(t, iprot, oprot)}
+  return &CalculatorClient{SharedServiceClient: sharedlib.NewSharedServiceClientProtocol(t, iprot, oprot)}
 }
 
 func NewCalculatorClient(c thrift.TClient) *CalculatorClient {
   return &CalculatorClient{
-    SharedServiceClient: shared.NewSharedServiceClient(c),
+    SharedServiceClient: sharedlib.NewSharedServiceClient(c),
   }
 }
 
@@ -541,11 +541,11 @@ func (p *CalculatorClient) Zip(ctx context.Context) (err error) {
 }
 
 type CalculatorProcessor struct {
-  *shared.SharedServiceProcessor
+  *sharedlib.SharedServiceProcessor
 }
 
 func NewCalculatorProcessor(handler Calculator) *CalculatorProcessor {
-  self7 := &CalculatorProcessor{shared.NewSharedServiceProcessor(handler)}
+  self7 := &CalculatorProcessor{sharedlib.NewSharedServiceProcessor(handler)}
   self7.AddToProcessorMap("ping", &calculatorProcessorPing{handler:handler})
   self7.AddToProcessorMap("add", &calculatorProcessorAdd{handler:handler})
   self7.AddToProcessorMap("calculate", &calculatorProcessorCalculate{handler:handler})

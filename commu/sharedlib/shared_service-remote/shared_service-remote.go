@@ -14,21 +14,15 @@ import (
 	"strconv"
 	"strings"
 	"github.com/apache/thrift/lib/go/thrift"
-	"github.com/codragonzuo/go-example/commu/sharedlib"
-	"commu"
+	"shared"
 )
 
-var _ = sharedlib.GoUnusedProtection__
-var _ = commu.GoUnusedProtection__
+var _ = shared.GoUnusedProtection__
 
 func Usage() {
   fmt.Fprintln(os.Stderr, "Usage of ", os.Args[0], " [-h host:port] [-u url] [-f[ramed]] function [arg1 [arg2...]]:")
   flag.PrintDefaults()
   fmt.Fprintln(os.Stderr, "\nFunctions:")
-  fmt.Fprintln(os.Stderr, "  void ping()")
-  fmt.Fprintln(os.Stderr, "  i32 add(i32 num1, i32 num2)")
-  fmt.Fprintln(os.Stderr, "  i32 calculate(i32 logid, Work w)")
-  fmt.Fprintln(os.Stderr, "  void zip()")
   fmt.Fprintln(os.Stderr, "  SharedStruct getStruct(i32 key)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
@@ -144,90 +138,20 @@ func main() {
   }
   iprot := protocolFactory.GetProtocol(trans)
   oprot := protocolFactory.GetProtocol(trans)
-  client := commu.NewCalculatorClient(thrift.NewTStandardClient(iprot, oprot))
+  client := shared.NewSharedServiceClient(thrift.NewTStandardClient(iprot, oprot))
   if err := trans.Open(); err != nil {
     fmt.Fprintln(os.Stderr, "Error opening socket to ", host, ":", port, " ", err)
     os.Exit(1)
   }
   
   switch cmd {
-  case "ping":
-    if flag.NArg() - 1 != 0 {
-      fmt.Fprintln(os.Stderr, "Ping requires 0 args")
-      flag.Usage()
-    }
-    fmt.Print(client.Ping(context.Background()))
-    fmt.Print("\n")
-    break
-  case "add":
-    if flag.NArg() - 1 != 2 {
-      fmt.Fprintln(os.Stderr, "Add requires 2 args")
-      flag.Usage()
-    }
-    tmp0, err8 := (strconv.Atoi(flag.Arg(1)))
-    if err8 != nil {
-      Usage()
-      return
-    }
-    argvalue0 := int32(tmp0)
-    value0 := argvalue0
-    tmp1, err9 := (strconv.Atoi(flag.Arg(2)))
-    if err9 != nil {
-      Usage()
-      return
-    }
-    argvalue1 := int32(tmp1)
-    value1 := argvalue1
-    fmt.Print(client.Add(context.Background(), value0, value1))
-    fmt.Print("\n")
-    break
-  case "calculate":
-    if flag.NArg() - 1 != 2 {
-      fmt.Fprintln(os.Stderr, "Calculate requires 2 args")
-      flag.Usage()
-    }
-    tmp0, err10 := (strconv.Atoi(flag.Arg(1)))
-    if err10 != nil {
-      Usage()
-      return
-    }
-    argvalue0 := int32(tmp0)
-    value0 := argvalue0
-    arg11 := flag.Arg(2)
-    mbTrans12 := thrift.NewTMemoryBufferLen(len(arg11))
-    defer mbTrans12.Close()
-    _, err13 := mbTrans12.WriteString(arg11)
-    if err13 != nil {
-      Usage()
-      return
-    }
-    factory14 := thrift.NewTJSONProtocolFactory()
-    jsProt15 := factory14.GetProtocol(mbTrans12)
-    argvalue1 := commu.NewWork()
-    err16 := argvalue1.Read(jsProt15)
-    if err16 != nil {
-      Usage()
-      return
-    }
-    value1 := argvalue1
-    fmt.Print(client.Calculate(context.Background(), value0, value1))
-    fmt.Print("\n")
-    break
-  case "zip":
-    if flag.NArg() - 1 != 0 {
-      fmt.Fprintln(os.Stderr, "Zip requires 0 args")
-      flag.Usage()
-    }
-    fmt.Print(client.Zip(context.Background()))
-    fmt.Print("\n")
-    break
   case "getStruct":
     if flag.NArg() - 1 != 1 {
       fmt.Fprintln(os.Stderr, "GetStruct requires 1 args")
       flag.Usage()
     }
-    tmp0, err17 := (strconv.Atoi(flag.Arg(1)))
-    if err17 != nil {
+    tmp0, err4 := (strconv.Atoi(flag.Arg(1)))
+    if err4 != nil {
       Usage()
       return
     }
