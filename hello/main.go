@@ -6,8 +6,10 @@ import (
     "runtime"
     "github.com/codragonzuo/go-example/meal"
     "github.com/codragonzuo/go-example/hello/life"
-    "github.com/codragonzuo/go-example/commu/commu"
-    "github.com/codragonzuo/go-example/commu/sharedlib"
+    "github.com/codragonzuo/go-example/hello/rpcserver"
+    _ "github.com/codragonzuo/go-example/commu/commu"
+    _ "github.com/codragonzuo/go-example/commu/sharedlib"
+    "github.com/apache/thrift/lib/go/thrift"
     "database/sql"
     _ "github.com/go-sql-driver/mysql"
 )
@@ -34,6 +36,9 @@ func main() {
     //go say ("world")
     //say ("hello")
     //sqlquery()
+
+
+    runserver()
 }
 
 func sayhello(){
@@ -49,6 +54,35 @@ func say(s string){
         fmt.Println(s)
     }
 }
+
+func runserver(){
+       var protocolFactory thrift.TProtocolFactory
+       var transportFactory thrift.TTransportFactory
+
+	//compact
+	protocolFactory = thrift.NewTCompactProtocolFactory()
+	//simplejson
+	//protocolFactory = thrift.NewTSimpleJSONProtocolFactory()
+	//case "json":
+	protocolFactory = thrift.NewTJSONProtocolFactory()
+	//case "binary", "":
+	//protocolFactory = thrift.NewTBinaryProtocolFactoryDefault()
+
+	//buffered
+	transportFactory = thrift.NewTBufferedTransportFactory(8192)
+	//} else {
+	//transportFactory = thrift.NewTTransportFactory()
+	
+	//framed
+        //transportFactory = thrift.NewTFramedTransportFactory(transportFactory)
+
+        if err := rpcserver.RunServer(transportFactory, protocolFactory, "192.168.20.45:8091", false); err != nil {
+			fmt.Println("error running server:", err)
+        }
+
+}
+
+
 
 
 func sqlquery(){
