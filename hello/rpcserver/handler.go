@@ -73,6 +73,8 @@ func (p *CalculatorHandler) Calculate(ctx context.Context, logid int32, w *commu
 }
 
 func  (p *CalculatorHandler) Doconfig(ctx context.Context, commandid int32, operationid int32, jsonconfig string) (val int32, err error) {
+    fmt.Printf("Doconfig called\n")
+    fmt.Printf("jsonconfig=%s\n", jsonconfig) 
     return 1,nil
 }
 
