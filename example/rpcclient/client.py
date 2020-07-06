@@ -63,6 +63,12 @@ def main():
     log = client.getStruct(1)
     print('Check log: %s' % log.value)
 
+
+
+    client.doconfig(3, 3, 'this is my json')
+
+
+
     # Close!
     transport.close()
 
