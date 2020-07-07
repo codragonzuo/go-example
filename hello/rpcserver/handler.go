@@ -7,14 +7,17 @@ import (
     "strconv"
     "github.com/codragonzuo/go-example/commu/sharedlib"
     "github.com/codragonzuo/go-example/commu/commu"
+    "github.com/codragonzuo/go-example/hello/callbeater"
 )
 
 type CalculatorHandler struct {
     log map[int]*sharedlib.SharedStruct
+    cb  * callbeater.Callbeat
 }
 
 func NewCalculatorHandler() *CalculatorHandler {
-    return &CalculatorHandler{log: make(map[int]*sharedlib.SharedStruct)}
+    //
+    return &CalculatorHandler{log: make(map[int]*sharedlib.SharedStruct), cb: callbeater.New()}
 }
 
 func (p *CalculatorHandler) Ping(ctx context.Context) (err error) {
@@ -73,6 +76,19 @@ func (p *CalculatorHandler) Calculate(ctx context.Context, logid int32, w *commu
 }
 
 func  (p *CalculatorHandler) Doconfig(ctx context.Context, commandid int32, operationid int32, jsonconfig string) (val int32, err error) {
+
+    fmt.Printf("operationid=%d\n", operationid)
+    fmt.Printf("jsonconfig=%s\n", jsonconfig)
+    switch (operationid) {
+    case 1: 
+        p.cb.Callfilebeat()
+        break
+    case 2:
+        p.cb.Stopfilebeat()
+        break
+    default:
+        break
+    }
     fmt.Printf("Doconfig called\n")
     fmt.Printf("jsonconfig=%s\n", jsonconfig) 
     return 1,nil

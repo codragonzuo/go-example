@@ -55,6 +55,9 @@ func say(s string){
     }
 }
 
+
+
+
 func runserver(){
        var protocolFactory thrift.TProtocolFactory
        var transportFactory thrift.TTransportFactory
