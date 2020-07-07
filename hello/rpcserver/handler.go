@@ -83,14 +83,23 @@ func  (p *CalculatorHandler) Doconfig(ctx context.Context, commandid int32, oper
     case 1: 
         p.cb.Callfilebeat()
         break
+
     case 2:
         p.cb.Stopfilebeat()
         break
+
+    case 3:
+        p.cb.Callpacketbeat()
+        break
+
+    case 4:
+        p.cb.Stoppacketbeat()
+        break
+
     default:
         break
     }
-    fmt.Printf("Doconfig called\n")
-    fmt.Printf("jsonconfig=%s\n", jsonconfig) 
+    fmt.Printf("Doconfig called Over\n-----------------------\n")
     return 1,nil
 }
 

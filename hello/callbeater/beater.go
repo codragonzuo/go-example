@@ -21,23 +21,27 @@ func init() {
 type Callbeat struct {
     sync.Mutex
     started bool
-    cmd  * exec.Cmd  
+    cmd  * exec.Cmd 
+    cmdpkt * exec.Cmd 
 }
 
 func New() (* Callbeat)  {
 
     cmd := exec.Cmd {
         Path:  "/root/beats/filebeat/filebeat",
-        //Args: []string{"-u", "-l", "8888"},
         Dir:  "/root/beats/filebeat/",
     }
 
+    cmdpkt := exec.Cmd {
+        Path:  "/root/beats/packetbeat/packetbeat",
+        Dir:  "/root/beats/filebeat/",
+    }
 
     return &Callbeat{
         started: false,
         cmd :  &cmd,
-             }
-
+        cmdpkt : &cmdpkt,
+        }
 }
 
 
@@ -49,31 +53,39 @@ func (cb * Callbeat) Callfilebeat () {
     cb.cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true} 
 }
 
+
 func (cb* Callbeat)   Stopfilebeat () {
-    //cb.cmd.Process.Kill()
 
     if err := cb.cmd.Process.Kill(); err != nil {
         log.Fatal("failed to kill process: ", err)
-    }    //cb.cmd.Process.Kill() 
-    
-    //if err := cmd.Process.Kill(); err != nil {
-    //    log.Fatal("failed to kill process: ", err)
-    //}
-    //syscall.Kill(-cb.cmd.Process.Pid, syscall.SIGKILL) 
+    }
 
+    //syscall.Kill(-cb.cmd.Process.Pid, syscall.SIGKILL) 
 
     time.Sleep(5 * time.Second)
     fmt.Printf("stopfilebeats over\n")
 }
 
 
-func (cb * Callbeat) callpacketbeat() {
+func (cb * Callbeat) Callpacketbeat() {
+    
+    if err := cb.cmdpkt.Start(); err != nil {
+        log.Panic(err)
+    }
+    cb.cmdpkt.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
     fmt.Printf("callpacketbeat\n")
 }
 
 
-func (cb * Callbeat) stoppacketbeat() {
-    fmt.Printf("stoppacketbeats\n")
+func (cb * Callbeat) Stoppacketbeat() {
+
+    if err := cb.cmdpkt.Process.Kill(); err != nil {
+        log.Fatal("failed to kill process: ", err)
+    }    
+
+    time.Sleep(5 * time.Second)
+
+    fmt.Printf("stoppacketbeat over\n")
 }
 
 
