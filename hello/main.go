@@ -4,6 +4,10 @@ import (
     "fmt"
     "log"
     "runtime"
+    "os"
+    "os/signal"
+    "os/exec"
+    "time"
     "github.com/codragonzuo/go-example/meal"
     "github.com/codragonzuo/go-example/hello/life"
     "github.com/codragonzuo/go-example/hello/rpcserver"
@@ -37,7 +41,7 @@ func main() {
     //say ("hello")
     //sqlquery()
 
-
+    //cmdtest()
     runserver()
 }
 
@@ -56,6 +60,39 @@ func say(s string){
 }
 
 
+
+
+func cmdtest() { 
+    cmd := exec.Cmd{ 
+        Path: "/root/beats/filebeat/filebeat", 
+//      Args: []string{"-u", "-l", "8888"}, 
+        Dir:  "/root/beats/filebeat", 
+    } 
+ 
+    if err := cmd.Start(); err != nil { 
+        log.Panic(err) 
+    } 
+ 
+    fmt.Println("Start child process with pid", cmd.Process.Pid) 
+ 
+    // Wait releases any resources associated with the Cmd 
+    go func() { 
+        if err := cmd.Wait(); err != nil { 
+            fmt.Printf("Child process %d exit with err: %v\n", cmd.Process.Pid, err) 
+        } 
+    }() 
+ 
+    // After five second, kill cmd's process 
+    time.Sleep(5 * time.Second) 
+    cmd.Process.Kill() 
+    fmt.Printf("Wait for kill success\n")
+    time.Sleep(30 * time.Second) 
+
+    c := make(chan os.Signal, 1) 
+    signal.Notify(c, os.Interrupt) 
+    s := <-c 
+    fmt.Println("Got signal:", s) 
+}
 
 
 func runserver(){

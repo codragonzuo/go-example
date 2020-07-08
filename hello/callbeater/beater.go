@@ -51,19 +51,42 @@ func (cb * Callbeat) Callfilebeat () {
         log.Panic(err) 
     } 
     cb.cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true} 
+
+    fmt.Println("Start child process with pid", cb.cmd.Process.Pid) 
+
 }
 
 
 func (cb* Callbeat)   Stopfilebeat () {
 
+    if cb.cmd.Process == nil {
+         return
+    }
+
+    go func() {
+        if err := cb.cmd.Wait(); err != nil {
+            fmt.Printf("Child process %d exit with err: %v\n", cb.cmd.Process.Pid, err)
+            fmt.Printf("process state : %v\n", cb.cmd.ProcessState)
+
+            cmd := exec.Cmd {
+                Path:  "/root/beats/filebeat/filebeat",
+                Dir:  "/root/beats/filebeat/",
+            }
+            cb.cmd = &cmd
+        }
+         
+    }()
+
+
     if err := cb.cmd.Process.Kill(); err != nil {
         log.Fatal("failed to kill process: ", err)
     }
 
-    //syscall.Kill(-cb.cmd.Process.Pid, syscall.SIGKILL) 
+    time.Sleep(3 * time.Second)
 
-    time.Sleep(5 * time.Second)
-    fmt.Printf("stopfilebeats over\n")
+    fmt.Printf("stopfilebeat over\n")
+
+
 }
 
 
@@ -73,11 +96,32 @@ func (cb * Callbeat) Callpacketbeat() {
         log.Panic(err)
     }
     cb.cmdpkt.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
-    fmt.Printf("callpacketbeat\n")
+
+    fmt.Println("Start child process with pid", cb.cmdpkt.Process.Pid)
 }
 
 
 func (cb * Callbeat) Stoppacketbeat() {
+
+    if cb.cmdpkt.Process == nil {
+         return
+    }
+
+    go func() {
+        if err := cb.cmdpkt.Wait(); err != nil {
+            fmt.Printf("Child process %d exit with err: %v\n", cb.cmdpkt.Process.Pid, err)
+            fmt.Printf("process state : %v\n", cb.cmdpkt.ProcessState)
+
+            cmdpkt := exec.Cmd {
+                Path:  "/root/beats/packetbeat/packetbeat",
+                Dir:  "/root/beats/packetbeat/",
+            }
+            cb.cmdpkt = &cmdpkt
+        }
+
+    }()
+
+
 
     if err := cb.cmdpkt.Process.Kill(); err != nil {
         log.Fatal("failed to kill process: ", err)
