@@ -81,3 +81,22 @@ GOGCCFLAGS="-fPIC -m64 -pthread -fmessage-length=0 -fdebug-prefix-map=/tmp/go-bu
 sed -i "s/github.com\/elastic\/beats\/v7/github.com\/codragonzuo\/beats/g" `grep -rl "github.com" ./`
 ```
 
+
+
+```
+import yaml
+import os
+file = open('filebeat.yml', 'r', encoding="utf-8")
+file_data = file.read()
+file.close()
+data=yaml.load(file_data)
+data['filebeat.config.inputs']
+{'enabled': True, 'path': 'myconfig.yml', 'reload.enabled': True, 'reload.period
+': '10s'}
+data['filebeat.config.inputs']
+{'enabled': True, 'path': 'myconfig.yml', 'reload.enabled': True, 'reload.period
+': '10s'}
+data['filebeat.config.inputs']['path']
+```
+
+
