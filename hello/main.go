@@ -11,6 +11,7 @@ import (
     "github.com/codragonzuo/go-example/meal"
     "github.com/codragonzuo/go-example/hello/life"
     "github.com/codragonzuo/go-example/hello/rpcserver"
+    "github.com/codragonzuo/go-example/hello/configfile"
     _ "github.com/codragonzuo/go-example/commu/commu"
     _ "github.com/codragonzuo/go-example/commu/sharedlib"
     "github.com/apache/thrift/lib/go/thrift"
@@ -42,7 +43,10 @@ func main() {
     //sqlquery()
 
     //cmdtest()
-    runserver()
+
+    configfile.Jsontoyamltest()
+    configfile.Yamltojsontest()
+    //runserver()
 }
 
 func sayhello(){

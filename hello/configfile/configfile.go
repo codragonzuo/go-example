@@ -9,14 +9,27 @@ import (
 )
 
 
+
+//  var { filebeatCfg map[string]interface{}{}  }
+
+
+
 func Yamltojsontest() {
-    t := map[string]interface{}{}
-    buffer, err := ioutil.ReadFile("./config.dev.yaml")
+    t := map[string]interface{}{}{}
+    buffer, err := ioutil.ReadFile("/root/beats/filebeat/filebeat.yml")
+    if err != nil {
+        fmt.Printf("fileread error !\n")
+    }
     err = yaml2.Unmarshal(buffer, &t)
     if err != nil {
         log.Fatalf(err.Error())
     }
-    fmt.Printf("%v",t)
+    fmt.Printf("%v\n\n\n\n",t)
+
+    for country := range t {
+        fmt.Println(country, t [country])
+    }
+
 }
 
 
@@ -32,6 +45,7 @@ func Jsontoyamltest() {
         return
     }
     fmt.Println(string(y))
+    fmt.Printf("\n")
     /* Output:
     name: John
     age: 30
@@ -45,6 +59,8 @@ func Jsontoyamltest() {
     /* Output:
     {"age":30,"name":"John"}
     */
+
+    fmt.Printf("\n\n\n")
 }
 
 
