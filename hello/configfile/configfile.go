@@ -15,7 +15,7 @@ import (
 
 
 func Yamltojsontest() {
-    t := map[string]interface{}{}{}
+    t := make(map[string] interface{})
     buffer, err := ioutil.ReadFile("/root/beats/filebeat/filebeat.yml")
     if err != nil {
         fmt.Printf("fileread error !\n")

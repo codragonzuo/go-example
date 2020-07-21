@@ -11,12 +11,15 @@ import (
     "github.com/codragonzuo/go-example/meal"
     "github.com/codragonzuo/go-example/hello/life"
     "github.com/codragonzuo/go-example/hello/rpcserver"
-    "github.com/codragonzuo/go-example/hello/configfile"
+    _ "github.com/codragonzuo/go-example/hello/configfile"
     _ "github.com/codragonzuo/go-example/commu/commu"
     _ "github.com/codragonzuo/go-example/commu/sharedlib"
     "github.com/apache/thrift/lib/go/thrift"
     "database/sql"
     _ "github.com/go-sql-driver/mysql"
+
+    "github.com/bitly/go-simplejson"
+    "encoding/json"
 )
 
 
@@ -44,9 +47,12 @@ func main() {
 
     //cmdtest()
 
-    configfile.Jsontoyamltest()
-    configfile.Yamltojsontest()
+    //configfile.Jsontoyamltest()
+    //configfile.Yamltojsontest()
+    
     //runserver()
+
+    jsontest()
 }
 
 func sayhello(){
@@ -161,3 +167,43 @@ func sqlquery(){
     }
 
 }
+
+
+func jsontest() {
+       //拼凑json   body为map数组
+	var rbody []map[string]interface{}
+	t := make(map[string]interface{})
+	t["device_id"] = "dddddd"
+	t["device_hid"] = "ddddddd"
+ 
+	rbody = append(rbody, t)
+	t1 := make(map[string]interface{})
+	t1["device_id"] = "aaaaa"
+	t1["device_hid"] = "aaaaa"
+ 
+	rbody = append(rbody, t1)
+ 
+	cnnJson := make(map[string]interface{})
+	cnnJson["code"] = 0
+	cnnJson["request_id"] = 123
+	cnnJson["code_msg"] = ""
+	cnnJson["body"] = rbody
+	cnnJson["page"] = 0
+	cnnJson["page_size"] = 0
+ 
+	b, _ := json.Marshal(cnnJson)
+	cnnn := string(b)
+	fmt.Println("cnnn:%s", cnnn)
+	cn_json, _ := simplejson.NewJson([]byte(cnnn))
+	cn_body, _ := cn_json.Get("body").Array()
+ 
+	for _, di := range cn_body {
+                //就在这里对di进行类型判断
+		newdi, _ := di.(map[string]interface{})
+		device_id := newdi["device_id"]
+		device_hid := newdi["device_hid"]
+		fmt.Println(device_hid, device_id)
+	}
+ 
+}
+
