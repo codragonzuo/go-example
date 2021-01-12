@@ -37,10 +37,10 @@ func main() {
     
     cb.CallKafka()
     fmt.Println("call kafka ...")
-    cb.CallSnort()
-    fmt.Println("call snort ...")
-    cb.CallFilebeat()
-    fmt.Println("call filebeat ...")
+    //cb.CallSnort()
+    //fmt.Println("call snort ...")
+    //cb.CallFilebeat()
+    //fmt.Println("call filebeat ...")
     /*
     go func() { 
         if err := cb.cmdkafka.Wait(); err != nil { 
